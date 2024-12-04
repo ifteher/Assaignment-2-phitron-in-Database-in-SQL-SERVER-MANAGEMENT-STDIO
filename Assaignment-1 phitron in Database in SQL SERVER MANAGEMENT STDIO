@@ -1,0 +1,167 @@
+DBMS QUESTION SOLUTION:
+
+-- Step 1: Create Students Table
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(100) NOT NULL,
+    Age INT CHECK (Age > 0),
+    Class VARCHAR(50) NOT NULL
+);
+
+-- Step 2: Create Library Table with Relationship to Students
+CREATE TABLE Library (
+    BookID INT PRIMARY KEY, -- Unique identifier for each book
+    BookTitle NVARCHAR(100) NOT NULL,
+    Author NVARCHAR(100),
+    StudentID INT, -- Foreign key to link with Students table
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID) -- Relation: One student can borrow books
+);
+
+
+--- c. Fees Table:
+CREATE TABLE Fees (
+    FeeID INT PRIMARY KEY, -- Unique identifier for each fee record
+    StudentID INT NOT NULL, -- Foreign key to link with Students table
+    Amount DECIMAL(10, 2) NOT NULL, -- Fee amount
+    DueDate DATE NOT NULL,
+    IsPaid BIT NOT NULL DEFAULT 0, -- Boolean to check if fee is paid
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID) -- Relation: One student can have multiple fee records
+);
+
+
+--- Q2: Add Proper Constraints:
+ALTER TABLE Students
+ADD CONSTRAINT CK_StudentAge CHECK (Age > 0);
+
+
+Q3: Differences Between Data and Information:
+Aspect	Data	Information
+Definition	Raw, unprocessed facts and figures.	Processed, organized data with meaning.
+Example	Marks scored by students in an exam.	Average marks of the class in that exam.
+Usefulness	Limited until organized or processed.	Directly useful for decision-making.
+Form	Numbers, text, or symbols without context.	Structured and meaningful representation.
+
+--- Q4: MySQL Update and Delete Query Issue:
+
+-- Disable Safe Update Mode
+SET SQL_SAFE_UPDATES = 0;
+
+-- Update a record (example: updating student's age)
+UPDATE Students
+SET Age = 20
+WHERE StudentID = 1;
+
+-- Delete a record (example: deleting a book record)
+DELETE FROM Library
+WHERE BookID = 1;
+
+-- Enable Safe Update Mode again (optional)
+SET SQL_SAFE_UPDATES = 1;
+
+Final SQL Code with Comments:
+CREATE TABLE Library (
+    BookID INT PRIMARY KEY, -- Unique identifier for each book
+    BookTitle NVARCHAR(100) NOT NULL,
+    Author NVARCHAR(100),
+    StudentID INT, -- Foreign key to associate books with students
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID) 
+);
+
+-- Step 3: Create Fees Table with Relationship to Students
+CREATE TABLE Fees (
+    FeeID INT PRIMARY KEY, -- Unique identifier for each fee record
+    StudentID INT NOT NULL, -- Foreign key linking fees to students
+    Amount DECIMAL(10, 2) NOT NULL, -- Fee amount
+    DueDate DATE NOT NULL,
+    IsPaid BIT NOT NULL DEFAULT 0, -- Indicates if the fee is paid (0 = unpaid, 1 = paid)
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID) 
+);
+
+-- Step 4: Example Update Query
+-- Update a student's class
+UPDATE Students
+SET Class = '10th Grade'
+WHERE StudentID = 2;
+
+-- Step 5: Example Delete Query
+-- Delete a book record from the Library
+DELETE FROM Library
+WHERE BookID = 5;
+
+-- Step 6: Enable Safe Update Mode again (Optional)
+SET SQL_SAFE_UPDATES = 1;
+
+-- Notes:
+-- 1. Safe Update Mode prevents accidental updates or deletions without a WHERE clause.
+-- 2. Use proper WHERE conditions to avoid unintended data changes.
+
+
+
+
+
+
+Answer to the question 5-10:
+
+
+create database info;
+ use info;
+ create table Employees(
+ EmployeeID int primary key,
+ FirstName varchar(40),
+ LastName varchar(40),
+ Age int,
+ Department varchar(50)
+ );
+ Insert into Employees(EmployeeID, FirstName,LastName,Age,Department)
+ values 
+(1, 'John', 'Doe', 28, 'Sales'),
+(2, 'Jane', 'Smith', 32, 'Marketing'),
+(3, 'Michael', 'Johnson', 35, 'Finance'),
+(4, 'Sarah', 'Brown', 30, 'HR'),
+(5, 'William', 'Davis', 25, 'Engineering'),
+(6, 'Emily', 'Wilson', 28, 'Sales'),
+(7, 'Robert', 'Lee', 33, 'Marketing'),
+(8, 'Laura', 'Hall', 29, 'Finance'),
+(9, 'Thomas', 'White', 31, 'HR'),
+(10, 'Olivia', 'Clark', 27, 'Engineering');
+
+-- Q-5: Show distinct Department names
+SELECT DISTINCT Department
+FROM Employees;
+-- This query retrieves unique department names from the table.
+
+-- Q-6: Show the LastName of Employees sorted by descending ages
+SELECT LastName
+FROM Employees
+ORDER BY Age DESC;
+-- This query retrieves the last names of employees, ordered by age in descending order.
+
+-- Q-7: Show the LastName of Employees whose age is greater than 30 and who work in the Marketing department
+SELECT LastName
+FROM Employees
+WHERE Age > 30 AND Department = 'Marketing';
+-- This query retrieves the last names of employees older than 30 who work in the Marketing department.
+
+-- Q-8: Select all employees
+SELECT *
+FROM Employees;
+-- This query retrieves all records from the Employees table.
+
+-- Q-9: Get employees whose names include 'son'
+SELECT *
+FROM Employees
+WHERE FirstName LIKE '%son%' OR LastName LIKE '%son%';
+-- This query retrieves employees whose first name or last name contains 'son'.
+
+-- Q-10: Get Engineers
+SELECT *
+FROM Employees
+WHERE Department = 'Engineering';
+-- This query retrieves all employees who work in the Engineering department.
+
+
+
+
+Created by,
+Mohammad ifteher uddin, phitron 4th batch.
+
